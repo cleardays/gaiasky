@@ -5,7 +5,6 @@ import java.util.List;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -26,6 +25,8 @@ import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf.ProgramConf.StereoProfile;
 import gaia.cu9.ari.gaiaorbit.util.Logger;
 import gaia.cu9.ari.gaiaorbit.util.coord.AstroUtils;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 
 public class PixelRenderSystem extends ImmediateRenderSystem implements IObserver {
     private final float BRIGHTNESS_FACTOR;
@@ -76,9 +77,9 @@ public class PixelRenderSystem extends ImmediateRenderSystem implements IObserve
     protected void initShaderProgram() {
         // Initialise renderer
         if (Gdx.app.getType() == ApplicationType.WebGL)
-            shaderProgram = new ShaderProgram(Gdx.files.internal("shader/point.vertex.glsl"), Gdx.files.internal("shader/point.fragment.wgl.glsl"));
+            shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/point.vertex.glsl"), Gdx.files.internal("shader/point.fragment.wgl.glsl"));
         else
-            shaderProgram = new ShaderProgram(Gdx.files.internal("shader/point.vertex.glsl"), Gdx.files.internal("shader/point.fragment.glsl"));
+            shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/point.vertex.glsl"), Gdx.files.internal("shader/point.fragment.glsl"));
         if (!shaderProgram.isCompiled()) {
             Logger.error(this.getClass().getName(), "Point shader compilation failed:\n" + shaderProgram.getLog());
         }
@@ -101,7 +102,7 @@ public class PixelRenderSystem extends ImmediateRenderSystem implements IObserve
         maxVertices = 3000000;
 
         VertexAttribute[] attribs = buildVertexAttributes();
-        curr.mesh = new Mesh(false, maxVertices, 0, attribs);
+        curr.mesh = new Mesh30(false, maxVertices, 0, attribs);
 
         curr.vertices = new float[maxVertices * (curr.mesh.getVertexAttributes().vertexSize / 4)];
         curr.vertexSize = curr.mesh.getVertexAttributes().vertexSize / 4;

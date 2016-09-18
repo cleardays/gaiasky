@@ -61,13 +61,14 @@ import gaia.cu9.ari.gaiaorbit.util.math.MathUtilsd;
 
 /**
  * Main class for the desktop launcher
+ * 
  * @author Toni Sagrista
  *
  */
 public class GaiaSkyDesktop implements IObserver {
     private static GaiaSkyDesktop gsd;
     public static String ASSETS_LOC;
-    
+
     private MemInfoWindow memInfoWindow;
 
     public static void main(String[] args) {
@@ -189,6 +190,9 @@ public class GaiaSkyDesktop implements IObserver {
         cfg.vSyncEnabled = GlobalConf.screen.VSYNC;
         cfg.foregroundFPS = 0;
         cfg.backgroundFPS = 0;
+        cfg.useGL30 = true;
+        cfg.gles30ContextMajorVersion = 3;
+        cfg.gles30ContextMinorVersion = 2;
         cfg.addIcon("icon/ic_launcher.png", Files.FileType.Internal);
 
         System.out.println("Display mode set to " + cfg.width + "x" + cfg.height + ", fullscreen: " + cfg.fullscreen);
@@ -248,11 +252,11 @@ public class GaiaSkyDesktop implements IObserver {
             });
             break;
         case DISPLAY_MEM_INFO_WINDOW:
-        	if(memInfoWindow == null){
-        		memInfoWindow = new MemInfoWindow((Stage)data[0], (Skin)data[1]);
-        	}
-        	memInfoWindow.display();
-        	break;
+            if (memInfoWindow == null) {
+                memInfoWindow = new MemInfoWindow((Stage) data[0], (Skin) data[1]);
+            }
+            memInfoWindow.display();
+            break;
         case SHOW_ABOUT_ACTION:
             // Exit fullscreen
             //            EventManager.instance.post(Events.FULLSCREEN_CMD, false);

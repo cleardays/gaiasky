@@ -5,7 +5,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -17,6 +16,8 @@ import gaia.cu9.ari.gaiaorbit.scenegraph.Particle;
 import gaia.cu9.ari.gaiaorbit.scenegraph.SceneGraphNode.RenderGroup;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.Logger;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 
 public class LineRenderSystem extends ImmediateRenderSystem {
 
@@ -32,7 +33,7 @@ public class LineRenderSystem extends ImmediateRenderSystem {
 
     @Override
     protected void initShaderProgram() {
-        shaderProgram = new ShaderProgram(Gdx.files.internal("shader/line.vertex.glsl"), Gdx.files.internal("shader/line.fragment.glsl"));
+        shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/line.vertex.glsl"), Gdx.files.internal("shader/line.fragment.glsl"));
         if (!shaderProgram.isCompiled()) {
             Logger.error(this.getClass().getName(), "Line shader compilation failed:\n" + shaderProgram.getLog());
         }
@@ -48,7 +49,7 @@ public class LineRenderSystem extends ImmediateRenderSystem {
         meshes[0] = curr;
 
         VertexAttribute[] attribs = buildVertexAttributes();
-        curr.mesh = new Mesh(false, maxVertices, 0, attribs);
+        curr.mesh = new Mesh30(false, maxVertices, 0, attribs);
 
         curr.vertices = new float[maxVertices * (curr.mesh.getVertexAttributes().vertexSize / 4)];
         curr.vertexSize = curr.mesh.getVertexAttributes().vertexSize / 4;
@@ -58,7 +59,7 @@ public class LineRenderSystem extends ImmediateRenderSystem {
         curr_outline = new MeshData();
         meshes[1] = curr_outline;
 
-        curr_outline.mesh = new Mesh(false, maxVertices, 0, attribs);
+        curr_outline.mesh = new Mesh30(false, maxVertices, 0, attribs);
 
         curr_outline.vertices = new float[maxVertices * (curr_outline.mesh.getVertexAttributes().vertexSize / 4)];
         curr_outline.vertexSize = curr_outline.mesh.getVertexAttributes().vertexSize / 4;

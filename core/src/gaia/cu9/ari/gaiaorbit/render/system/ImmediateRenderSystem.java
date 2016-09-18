@@ -1,14 +1,14 @@
 package gaia.cu9.ari.gaiaorbit.render.system;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import gaia.cu9.ari.gaiaorbit.scenegraph.SceneGraphNode.RenderGroup;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 
 public abstract class ImmediateRenderSystem extends AbstractRenderSystem {
 
-    protected ShaderProgram shaderProgram;
+    protected ShaderProgram30 shaderProgram;
 
     protected int meshIdx;
     protected MeshData[] meshes;
@@ -16,7 +16,7 @@ public abstract class ImmediateRenderSystem extends AbstractRenderSystem {
 
     protected class MeshData {
 
-        protected Mesh mesh;
+        protected Mesh30 mesh;
 
         protected int colorOffset;
 

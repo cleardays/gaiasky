@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -22,6 +21,8 @@ import gaia.cu9.ari.gaiaorbit.scenegraph.component.RotationComponent;
 import gaia.cu9.ari.gaiaorbit.util.Constants;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.color.ColourUtils;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 import gaia.cu9.ari.gaiaorbit.util.math.Vector3d;
 import gaia.cu9.ari.gaiaorbit.util.time.ITimeFrameProvider;
 
@@ -99,7 +100,7 @@ public abstract class CelestialBody extends AbstractPositionEntity implements I3
         Object first = params[0];
         if (first instanceof ShaderProgram) {
             // QUAD - SHADER
-            render((ShaderProgram) first, (Float) params[1], (Boolean) params[2], (Mesh) params[3], (ICamera) params[4]);
+            render((ShaderProgram) first, (Float) params[1], (Boolean) params[2], (Mesh30) params[3], (ICamera) params[4]);
         } else if (first instanceof SpriteBatch) {
             // LABEL
             render((SpriteBatch) first, (ShaderProgram) params[1], (BitmapFont) params[2], (BitmapFont) params[3], (ICamera) params[4]);
@@ -115,7 +116,7 @@ public abstract class CelestialBody extends AbstractPositionEntity implements I3
      * Shader render, for planets and stars.
      */
     @Override
-    public void render(ShaderProgram shader, float alpha, boolean colorTransit, Mesh mesh, ICamera camera) {
+    public void render(ShaderProgram30 shader, float alpha, boolean colorTransit, Mesh30 mesh, ICamera camera) {
         compalpha = alpha;
 
         float size = getFuzzyRenderSize(camera);

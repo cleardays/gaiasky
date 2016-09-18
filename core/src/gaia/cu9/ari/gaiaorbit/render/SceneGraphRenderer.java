@@ -44,6 +44,7 @@ import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.GlobalResources;
 import gaia.cu9.ari.gaiaorbit.util.Logger;
 import gaia.cu9.ari.gaiaorbit.util.ds.Multilist;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 import gaia.cu9.ari.gaiaorbit.util.math.MathUtilsd;
 import gaia.cu9.ari.gaiaorbit.util.override.AtmosphereGroundShaderProvider;
 import gaia.cu9.ari.gaiaorbit.util.override.AtmosphereShaderProvider;
@@ -65,7 +66,8 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
 
     public AbstractRenderSystem[] pixelRenderSystems;
 
-    private ShaderProgram starShader, fontShader;
+    private ShaderProgram fontShader;
+    private ShaderProgram30 starShader;
 
     private int maxTexSize;
 
@@ -81,7 +83,9 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
 
     /** The particular current scene graph renderer **/
     private ISGR sgr;
-    /** Renderer vector, with 0 = normal, 1 = stereoscopic, 2 = FOV, 3 = cubemap **/
+    /**
+     * Renderer vector, with 0 = normal, 1 = stereoscopic, 2 = FOV, 3 = cubemap
+     **/
     private ISGR[] sgrs;
 
     final int SGR_DEFAULT_IDX = 0, SGR_STEREO_IDX = 1, SGR_FOV_IDX = 2, SGR_CUBEMAP_IDX = 3;
@@ -99,7 +103,8 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
 
         ShaderLoader.Pedantic = false;
         ShaderProgram.pedantic = false;
-        starShader = new ShaderProgram(Gdx.files.internal("shader/star.vertex.glsl"), Gdx.files.internal("shader/star.rays.fragment.glsl"));
+        ShaderProgram30.pedantic = false;
+        starShader = new ShaderProgram30(Gdx.files.internal("shader/star.vertex.glsl"), Gdx.files.internal("shader/star.rays.fragment.glsl"));
         if (!starShader.isCompiled()) {
             Logger.error(new RuntimeException(), this.getClass().getName() + " - Star shader compilation failed:\n" + starShader.getLog());
         }
@@ -157,7 +162,7 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
          */
         sgrs = new ISGR[4];
         sgrs[SGR_DEFAULT_IDX] = new SGR();
-        sgrs[SGR_STEREO_IDX] = new SGRStereoscopic();
+        sgrs[SGR_STEREO_IDX] = null;
         sgrs[SGR_FOV_IDX] = new SGRFov();
         sgrs[SGR_CUBEMAP_IDX] = new SGRCubemap();
         sgr = null;
@@ -424,7 +429,8 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
 
     public void dispose() {
         for (ISGR sgr : sgrs) {
-            sgr.dispose();
+            if (sgr != null)
+                sgr.dispose();
         }
     }
 

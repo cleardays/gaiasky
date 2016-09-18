@@ -3,8 +3,7 @@ package gaia.cu9.ari.gaiaorbit.render.system;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -16,6 +15,8 @@ import gaia.cu9.ari.gaiaorbit.scenegraph.Particle;
 import gaia.cu9.ari.gaiaorbit.scenegraph.SceneGraphNode.RenderGroup;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.Logger;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 import gaia.cu9.ari.gaiaorbit.util.math.MathUtilsd;
 import gaia.cu9.ari.gaiaorbit.util.math.Vector3d;
 
@@ -42,7 +43,7 @@ public class LineQuadRenderSystem extends LineRenderSystem {
 
     public LineQuadRenderSystem(RenderGroup rg, int priority, float[] alphas) {
         super(rg, priority, alphas);
-        glType = GL20.GL_TRIANGLES;
+        glType = GL30.GL_TRIANGLES;
         line = new Vector3d();
         camdir0 = new Vector3d();
         camdir1 = new Vector3d();
@@ -55,7 +56,7 @@ public class LineQuadRenderSystem extends LineRenderSystem {
 
     @Override
     protected void initShaderProgram() {
-        shaderProgram = new ShaderProgram(Gdx.files.internal("shader/line.quad.vertex.glsl"), Gdx.files.internal("shader/line.quad.fragment.glsl"));
+        shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/line.quad.vertex.glsl"), Gdx.files.internal("shader/line.quad.fragment.glsl"));
         if (!shaderProgram.isCompiled()) {
             Logger.error(this.getClass().getName(), "Line shader compilation failed:\n" + shaderProgram.getLog());
         }
@@ -77,7 +78,7 @@ public class LineQuadRenderSystem extends LineRenderSystem {
             currext.maxIndices = maxVertices + maxVertices / 2;
 
             VertexAttribute[] attribs = buildVertexAttributes();
-            currext.mesh = new Mesh(Mesh.VertexDataType.VertexArray, false, maxVertices, currext.maxIndices, attribs);
+            currext.mesh = new Mesh30(Mesh30.VertexDataType.VertexArray, false, maxVertices, currext.maxIndices, attribs);
 
             currext.indices = new short[currext.maxIndices];
             currext.vertexSize = currext.mesh.getVertexAttributes().vertexSize / 4;

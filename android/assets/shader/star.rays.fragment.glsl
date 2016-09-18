@@ -77,10 +77,11 @@ draw_star() {
 		}else{
 			// Level is 0 when dist <= dist_down and 1 when dist >= dist_up
        		float level = min((u_distance) / (u_th_dist_up * 10000.0), 1.0);
-	        vec4 c = draw_star_rays(uv, vec2(0.5), dist);
+	        //vec4 c = draw_star_rays(uv, vec2(0.5), dist);
 	        vec4 s = draw_simple_star(dist, u_inner_rad, 0.15);
 	
-	        return c  * (1.0 - level) + s;
+	        //return c  * (1.0 - level) + s;
+	        return s;
 	    }
     } else {
         return draw_simple_star(dist, u_inner_rad, 0.15);

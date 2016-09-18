@@ -4,13 +4,13 @@ import gaia.cu9.ari.gaiaorbit.render.IPostProcessor;
 import gaia.cu9.ari.gaiaorbit.render.PostProcessorFactory;
 
 public class DesktopPostProcessorFactory extends PostProcessorFactory {
-	DesktopPostProcessor instance = null;
+    DesktopPostProcessorDummy instance = null;
 
     @Override
     public IPostProcessor getPostProcessor() {
-    	if(instance == null){
-    		instance = new DesktopPostProcessor();
-    	}
+        if (instance == null) {
+            instance = new DesktopPostProcessorDummy();
+        }
         return instance;
     }
 

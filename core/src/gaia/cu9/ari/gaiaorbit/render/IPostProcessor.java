@@ -23,23 +23,34 @@ public interface IPostProcessor extends Disposable {
         public MotionBlur motionblur;
 
         public boolean capture() {
-            return pp.capture();
+            if (pp != null)
+                return pp.capture();
+            else
+                return false;
         }
 
         public boolean captureNoClear() {
-            return pp.captureNoClear();
+            if (pp != null)
+                return pp.captureNoClear();
+            else
+                return false;
         }
 
         public void render() {
-            pp.render();
+            if (pp != null)
+                pp.render();
         }
 
         public FrameBuffer captureEnd() {
-            return pp.captureEnd();
+            if (pp != null)
+                return pp.captureEnd();
+            else
+                return null;
         }
 
         public void render(FrameBuffer dest) {
-            pp.render(dest);
+            if (pp != null)
+                pp.render(dest);
         }
 
         public void dispose() {

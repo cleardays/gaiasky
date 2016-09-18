@@ -7,7 +7,6 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -27,6 +26,8 @@ import gaia.cu9.ari.gaiaorbit.scenegraph.SceneGraphNode.RenderGroup;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf.ProgramConf.StereoProfile;
 import gaia.cu9.ari.gaiaorbit.util.Logger;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 import gaia.cu9.ari.gaiaorbit.util.math.MathUtilsd;
 
 public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserver {
@@ -35,7 +36,7 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
     Vector3 aux;
     int additionalOffset, pmOffset;
 
-    private ShaderProgram quadProgram;
+    private ShaderProgram30 quadProgram;
     private MeshData quad;
     private Texture[] nebulatextures;
 
@@ -51,9 +52,9 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
 
         // POINT (STARS) PROGRAM
         if (Gdx.app.getType() == ApplicationType.WebGL)
-            shaderProgram = new ShaderProgram(Gdx.files.internal("shader/point.galaxy.vertex.glsl"), Gdx.files.internal("shader/point.galaxy.fragment.wgl.glsl"));
+            shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/point.galaxy.vertex.glsl"), Gdx.files.internal("shader/point.galaxy.fragment.wgl.glsl"));
         else
-            shaderProgram = new ShaderProgram(Gdx.files.internal("shader/point.galaxy.vertex.glsl"), Gdx.files.internal("shader/point.galaxy.fragment.glsl"));
+            shaderProgram = new ShaderProgram30(Gdx.files.internal("shader/point.galaxy.vertex.glsl"), Gdx.files.internal("shader/point.galaxy.fragment.glsl"));
         if (!shaderProgram.isCompiled()) {
             Logger.error(this.getClass().getName(), "Point shader compilation failed:\n" + shaderProgram.getLog());
         }
@@ -63,7 +64,7 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
         shaderProgram.end();
 
         // QUAD (NEBULA) PROGRAM
-        quadProgram = new ShaderProgram(Gdx.files.internal("shader/nebula.vertex.glsl"), Gdx.files.internal("shader/nebula.fragment.glsl"));
+        quadProgram = new ShaderProgram30(Gdx.files.internal("shader/nebula.vertex.glsl"), Gdx.files.internal("shader/nebula.fragment.glsl"));
         if (!quadProgram.isCompiled()) {
             Logger.error(this.getClass().getName(), "Nebula shader compilation failed:\n" + quadProgram.getLog());
         }
@@ -87,7 +88,7 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
         maxVertices = 3000000;
 
         VertexAttribute[] attribs = buildVertexAttributes();
-        curr.mesh = new Mesh(false, maxVertices, 0, attribs);
+        curr.mesh = new Mesh30(false, maxVertices, 0, attribs);
 
         curr.vertices = new float[maxVertices * (curr.mesh.getVertexAttributes().vertexSize / 4)];
         curr.vertexSize = curr.mesh.getVertexAttributes().vertexSize / 4;
@@ -103,7 +104,7 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
         int maxQuadIndices = maxQuads * 6;
         quad = new MeshData();
 
-        quad.mesh = new Mesh(false, maxQuadVertices, maxQuadIndices, VertexAttribute.Position(), VertexAttribute.Normal(), VertexAttribute.TexCoords(0), new VertexAttribute(Usage.Generic, 2, "a_additional"));
+        quad.mesh = new Mesh30(false, maxQuadVertices, maxQuadIndices, VertexAttribute.Position(), VertexAttribute.Normal(), VertexAttribute.TexCoords(0), new VertexAttribute(Usage.Generic, 2, "a_additional"));
         quad.vertices = new float[maxQuadVertices * (quad.mesh.getVertexAttributes().vertexSize / 4)];
         quad.vertexSize = quad.mesh.getVertexAttributes().vertexSize / 4;
         quad.indices = new short[maxQuadIndices];
@@ -149,7 +150,8 @@ public class GalaxyRenderSystem extends ImmediateRenderSystem implements IObserv
                     // SIZE
                     float starSize = 0;
                     if (star.length > 3) {
-                        starSize = (star[3] * 10f + 1f) /** (Constants.webgl ? 0.08f : 1f) */
+                        starSize = (star[3] * 10f
+                                + 1f) /** (Constants.webgl ? 0.08f : 1f) */
                         ;
                     } else {
                         starSize = (float) Math.abs(rand.nextGaussian()) * 8f + 1.0f;

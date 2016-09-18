@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.Mesh.VertexDataType;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -28,12 +26,15 @@ import gaia.cu9.ari.gaiaorbit.util.Constants;
 import gaia.cu9.ari.gaiaorbit.util.DecalUtils;
 import gaia.cu9.ari.gaiaorbit.util.GlobalConf;
 import gaia.cu9.ari.gaiaorbit.util.comp.DistToCameraComparator;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30;
+import gaia.cu9.ari.gaiaorbit.util.glutils.Mesh30.VertexDataType;
+import gaia.cu9.ari.gaiaorbit.util.glutils.ShaderProgram30;
 import gaia.cu9.ari.gaiaorbit.util.time.TimeUtils;
 
 public class QuadRenderSystem extends AbstractRenderSystem implements IObserver {
 
-    private ShaderProgram shaderProgram;
-    private Mesh mesh;
+    private ShaderProgram30 shaderProgram;
+    private Mesh30 mesh;
     private boolean useStarColorTransit;
     private boolean starColorTransit = false;
     private Texture noise;
@@ -44,13 +45,19 @@ public class QuadRenderSystem extends AbstractRenderSystem implements IObserver 
 
     /**
      * Creates a new shader quad render component.
-     * @param rg The render group.
-     * @param priority The priority of the component.
-     * @param alphas The alphas list.
-     * @param shaderProgram The shader program to render the quad with.
-     * @param useStarColorTransit Whether to use the star color transit or not.
+     * 
+     * @param rg
+     *            The render group.
+     * @param priority
+     *            The priority of the component.
+     * @param alphas
+     *            The alphas list.
+     * @param shaderProgram
+     *            The shader program to render the quad with.
+     * @param useStarColorTransit
+     *            Whether to use the star color transit or not.
      */
-    public QuadRenderSystem(RenderGroup rg, int priority, float[] alphas, ShaderProgram shaderProgram, boolean useStarColorTransit) {
+    public QuadRenderSystem(RenderGroup rg, int priority, float[] alphas, ShaderProgram30 shaderProgram, boolean useStarColorTransit) {
         super(rg, priority, alphas);
         this.shaderProgram = shaderProgram;
         this.useStarColorTransit = useStarColorTransit;
@@ -71,7 +78,7 @@ public class QuadRenderSystem extends AbstractRenderSystem implements IObserver 
 
         // We wont need indices if we use GL_TRIANGLE_FAN to draw our quad
         // TRIANGLE_FAN will draw the verts in this order: 0, 1, 2; 0, 2, 3
-        mesh = new Mesh(VertexDataType.VertexArray, true, 4, 6, new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE), new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        mesh = new Mesh30(VertexDataType.VertexArray, true, 4, 6, new VertexAttribute(Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE), new VertexAttribute(Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
         mesh.setVertices(vertices, 0, vertices.length);
         mesh.getIndicesBuffer().position(0);
@@ -165,8 +172,8 @@ public class QuadRenderSystem extends AbstractRenderSystem implements IObserver 
             // Global uniforms
             shaderProgram.setUniformf("u_time", TimeUtils.getRunningTimeSecs());
             // Bind
-            noise.bind(0);
-            shaderProgram.setUniformi("u_nebulaTexture", 0);
+            noise.bind(3);
+            shaderProgram.setUniformi("u_noiseTexture", 3);
         }
 
         int size = renderables.size();
