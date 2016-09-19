@@ -172,8 +172,8 @@ public class QuadRenderSystem extends AbstractRenderSystem implements IObserver 
             // Global uniforms
             shaderProgram.setUniformf("u_time", TimeUtils.getRunningTimeSecs());
             // Bind
-            noise.bind(3);
-            shaderProgram.setUniformi("u_noiseTexture", 3);
+            noise.bind(4);
+            shaderProgram.setUniformi("u_noiseTexture", 4);
         }
 
         int size = renderables.size();

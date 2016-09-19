@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -98,9 +99,9 @@ public abstract class CelestialBody extends AbstractPositionEntity implements I3
     @Override
     public void render(Object... params) {
         Object first = params[0];
-        if (first instanceof ShaderProgram) {
+        if (first instanceof ShaderProgram30) {
             // QUAD - SHADER
-            render((ShaderProgram) first, (Float) params[1], (Boolean) params[2], (Mesh30) params[3], (ICamera) params[4]);
+            render((ShaderProgram30) first, (Float) params[1], (Boolean) params[2], (Mesh30) params[3], (ICamera) params[4]);
         } else if (first instanceof SpriteBatch) {
             // LABEL
             render((SpriteBatch) first, (ShaderProgram) params[1], (BitmapFont) params[2], (BitmapFont) params[3], (ICamera) params[4]);
@@ -148,7 +149,7 @@ public abstract class CelestialBody extends AbstractPositionEntity implements I3
         }
 
         // Sprite.render
-        mesh.render(shader, GL20.GL_TRIANGLES, 0, 6);
+        mesh.render(shader, GL30.GL_TRIANGLES, 0, 6);
     }
 
     public float getFuzzyRenderSize(ICamera camera) {

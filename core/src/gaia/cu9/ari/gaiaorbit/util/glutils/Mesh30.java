@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
@@ -672,17 +672,17 @@ public class Mesh30 implements Disposable {
                 int oldLimit = buffer.limit();
                 buffer.position(offset);
                 buffer.limit(offset + count);
-                Gdx.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, buffer);
+                Gdx.gl30.glDrawElements(primitiveType, count, GL30.GL_UNSIGNED_SHORT, buffer);
                 buffer.position(oldPosition);
                 buffer.limit(oldLimit);
             } else {
-                Gdx.gl20.glDrawArrays(primitiveType, offset, count);
+                Gdx.gl30.glDrawArrays(primitiveType, offset, count);
             }
         } else {
             if (indices.getNumIndices() > 0)
-                Gdx.gl20.glDrawElements(primitiveType, count, GL20.GL_UNSIGNED_SHORT, offset * 2);
+                Gdx.gl30.glDrawElements(primitiveType, count, GL30.GL_UNSIGNED_SHORT, offset * 2);
             else
-                Gdx.gl20.glDrawArrays(primitiveType, offset, count);
+                Gdx.gl30.glDrawArrays(primitiveType, offset, count);
         }
 
         if (autoBind)

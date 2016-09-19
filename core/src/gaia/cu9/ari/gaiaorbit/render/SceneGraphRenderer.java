@@ -179,17 +179,17 @@ public class SceneGraphRenderer extends AbstractRenderer implements IProcessRend
         blendNoDepthRunnable = new Runnable() {
             @Override
             public void run() {
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-                Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
-                Gdx.gl.glDepthMask(false);
+                Gdx.gl30.glEnable(GL20.GL_BLEND);
+                Gdx.gl30.glDisable(GL20.GL_DEPTH_TEST);
+                Gdx.gl30.glDepthMask(false);
             }
         };
         blendDepthRunnable = new Runnable() {
             @Override
             public void run() {
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-                Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-                Gdx.gl.glDepthMask(true);
+                Gdx.gl30.glEnable(GL20.GL_BLEND);
+                Gdx.gl30.glEnable(GL20.GL_DEPTH_TEST);
+                Gdx.gl30.glDepthMask(true);
             }
         };
 
